@@ -43,7 +43,7 @@ void logJson(JsonObject& jsondata) {
 }
 
 void setup() {
-  Serial.begin(921600);
+  Serial.begin(115200);
   delay(1000);
 #ifndef LOG_LEVEL
   LOG_LEVEL_SILENT

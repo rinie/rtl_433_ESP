@@ -1,0 +1,202 @@
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 188777542, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:1184
+load:0x40078000,len:13192
+load:0x40080400,len:3028
+entry 0x400805e4
+N:  
+N: ****** setup ******
+N: ****** setup complete ******
+----- SX127x Status -----
+RegOpMode: 0x2d
+RegPacketConfig1: 0x00
+RegPacketConfig2: 0x00
+RegBitrateMsb: 0x68
+RegBitrateLsb: 0x2a
+RegRxBw: 0x01
+RegAfcBw: 0x02
+-------------------------
+RegOokPeak: 0x08
+RegOokFix: 0x0f
+RegOokAvg: 0x12
+-------------------------
+RegLna: 0x20
+RegRxConfig: 0x08
+RegRssiConfig: 0x00
+-------------------------
+RegDioMapping1: 0x00
+
+
+N: Received message : {"model":"Akhan-100F14","id":65793,"data":"0x4 (Mute)","protocol":"Akhan 100F14 remote keyless entry","rssi":-42,"duration":257000}
+N: Received message : {"model":"Akhan-100F14","id":65793,"data":"0x4 (Mute)","protocol":"Akhan 100F14 remote keyless entry","rssi":-42,"duration":257000}
+N: Received message : {"model":"Smoke-GS558","id":16448,"unit":8,"learn":0,"code":"280808","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-42,"duration":257000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-45,"duration":384998}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-45,"duration":384998}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-45,"duration":384998}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-45,"duration":384998}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-45,"duration":384998}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-45,"duration":384998}
+N: Received message : {"model":"Interlogix-Security","subtype":"glass","id":"9ab130","battery_ok":1,"switch1":"CLOSED","switch2":"CLOSED","switch3":"OPEN","switch4":"CLOSED","switch5":"OPEN","raw_message":"4ae600","protocol":"Interlogix GE UTC Security Devices","rssi":-81,"duration":91000}
+N: Received message : {"model":"Secplus-v1","id":315,"id0":0,"id1":0,"switch_id":0,"pad_id":315,"pin":"0987*","fixed":"2382812802","rolling":"716932194","protocol":"Security+ (Keyfob)","rssi":-81,"duration":65000}
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-49,"duration":383000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-49,"duration":383000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-49,"duration":383000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-49,"duration":383000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-49,"duration":383000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-49,"duration":383000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-49,"duration":383000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-49,"duration":383000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-49,"duration":383000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-49,"duration":383000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-49,"duration":383000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-49,"duration":383000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-51,"duration":376000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-51,"duration":376000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-51,"duration":376000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-51,"duration":376000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-51,"duration":376000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-51,"duration":376000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-50,"duration":384999}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-50,"duration":384999}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-50,"duration":384999}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-50,"duration":384999}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-50,"duration":384999}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-50,"duration":384999}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-52,"duration":371000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-52,"duration":371000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-52,"duration":371000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-52,"duration":371000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-52,"duration":371000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-52,"duration":371000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-52,"duration":371000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-52,"duration":371000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-52,"duration":371000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-52,"duration":371000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-52,"duration":371000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-52,"duration":371000}
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+N: Received message : {"model":"Smoke-GS558","id":16448,"unit":8,"learn":0,"code":"280808","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-44,"duration":261000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-57,"duration":369000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-57,"duration":369000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-57,"duration":369000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-57,"duration":369000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-57,"duration":369000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-57,"duration":369000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-57,"duration":369000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-57,"duration":369000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-57,"duration":369000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-57,"duration":369000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-57,"duration":369000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-57,"duration":369000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-49,"duration":380000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-49,"duration":380000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-49,"duration":380000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-49,"duration":380000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-49,"duration":380000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-49,"duration":380000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-49,"duration":380000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-49,"duration":380000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-49,"duration":380000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-49,"duration":380000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-49,"duration":380000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-49,"duration":380000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":383000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":383000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":383000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":383000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-46,"duration":383000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-46,"duration":383000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-46,"duration":383000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Nexa","rssi":-46,"duration":383000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":383000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":383000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":383000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":383000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-47,"duration":381000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-47,"duration":381000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-47,"duration":381000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":1,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-47,"duration":381000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-47,"duration":381000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-47,"duration":381000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-47,"duration":381000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Nexa","rssi":-47,"duration":381000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-47,"duration":381000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-47,"duration":381000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-47,"duration":381000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":2,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-47,"duration":381000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-48,"duration":369000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-48,"duration":369000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-48,"duration":369000}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":2,"group_call":"No","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-48,"duration":369000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-48,"duration":369000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-48,"duration":369000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-48,"duration":369000}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Nexa","rssi":-48,"duration":369000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-48,"duration":369000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-48,"duration":369000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-48,"duration":369000}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":1,"group":0,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-48,"duration":369000}
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-46,"duration":385001}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-46,"duration":385001}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-46,"duration":385001}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-46,"duration":385001}
+N: Received message : {"model":"Nexa-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Nexa","rssi":-46,"duration":385001}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+N: Received message : {"model":"Proove-Security","id":8886094,"channel":3,"state":"OFF","unit":3,"group":1,"protocol":"Proove / Nexa / KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+
+
+N: Received message : {"model":"Waveman-Switch","id":"C","channel":1,"button":3,"state":"off","protocol":"Waveman Switch Transmitter","rssi":-45,"duration":1445000}
+
+N: Received message : {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-46,"duration":385001}
+
+N: Received message : {"model":"Smoke-GS558","id":16448,"unit":8,"learn":0,"code":"280808","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-54,"duration":256999}
+N: Received message : {"model":"Akhan-100F14","id":65793,"data":"0x4 (Mute)","protocol":"Akhan 100F14 remote keyless entry","rssi":-54,"duration":261000}
+N: Received message : {"model":"Akhan-100F14","id":65793,"data":"0x4 (Mute)","protocol":"Akhan 100F14 remote keyless entry","rssi":-54,"duration":261000}
+N: Received message : {"model":"Smoke-GS558","id":16448,"unit":8,"learn":0,"code":"280808","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-54,"duration":261000}
+N: Received message : {"model":"Waveman-Switch","id":"C","channel":1,"button":3,"state":"off","protocol":"Waveman Switch Transmitter","rssi":-54,"duration":261000}
+N: Received message : {"model":"Generic-Remote","id":4112,"cmd":21,"tristate":"0Z000Z000ZZZ","protocol":"Generic Remote SC226x EV1527","rssi":-57,"duration":270000}
+N: Received message : {"model":"Generic-Remote","id":4112,"cmd":21,"tristate":"0Z000Z000ZZZ","protocol":"Generic Remote SC226x EV1527","rssi":-57,"duration":270000}
+N: Received message : {"model":"Generic-Remote","id":4112,"cmd":21,"tristate":"0Z000Z000ZZZ","protocol":"Generic Remote SC226x EV1527","rssi":-57,"duration":270000}
+N: Received message : {"model":"Smoke-GS558","id":16448,"unit":8,"learn":0,"code":"a80808","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-57,"duration":270000}
+
+
