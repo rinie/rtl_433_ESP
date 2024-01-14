@@ -200,3 +200,15 @@ N: Received message : {"model":"Generic-Remote","id":4112,"cmd":21,"tristate":"0
 N: Received message : {"model":"Smoke-GS558","id":16448,"unit":8,"learn":0,"code":"a80808","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-57,"duration":270000}
 
 
+---- Opened the serial port COM6 ----
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+rtl_433_ESP(7): Average RSSI Signal -89 dbm, adjusted RSSI Threshold -80, samples 50000
+rtl_433_ESP(7): Average RSSI Signal -89 dbm, adjusted RSSI Threshold -80, samples 50000
+rtl_433_ESP(7): Average RSSI Signal -89 dbm, adjusted RSSI Threshold -80, samples 50000
+N: Received message : {"model":"Generic-Remote","id":1098,"cmd":177,"tristate":"00Z0Z0XXX10Z","protocol":"Generic Remote SC226x EV1527","rssi":-78,"duration":251000}
+N: Received message : {"model":"Smoke-GS558","id":27281,"unit":0,"learn":0,"code":"8d5220","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-78,"duration":251000}
+N: Received message : {"model":"Smoke-GS558","id":27281,"unit":0,"learn":0,"code":"8d5220","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-79,"duration":241000}
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000

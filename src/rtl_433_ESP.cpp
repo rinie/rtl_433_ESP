@@ -136,7 +136,7 @@ rtl_433_ESP::rtl_433_ESP() {
 
 /**
  * @brief Initialize Transceiver and rtl_433 decoders
- * 
+ *
  * @param inputPin - GPIO of receiver
  * @param receiveFrequency - receive frequency
  */
@@ -272,6 +272,52 @@ void rtl_433_ESP::initReceiver(byte inputPin, float receiveFrequency) {
     // Rx bandwidth:                        270.0 kHz (CC1101) / 250 kHz (SX1276)
     // output power:                        10 dBm
     // preamble length:                     32 bits
+/*
+RaspyRFM
+
+PARAM_TX35 = {"duration": 15, "baudrate": 9.579,  "sync": [0x2d, 0xd4], "rxlen": 14} # LaCrosse TX35, EMT7110
+PARAM_TX29  = {"duration": 15, "baudrate": 17.241, "sync": [0x2d, 0xd4], "rxlen": 5} # LaCrosse TX29
+PARAM_BRESSER = {"duration": 15, "baudrate": 8.000, "sync": [0x2d, 0xd4], "rxlen": 25} # Bresser 7in1 weather
+PARAM_EC3K = {"duration": 15, "baudrate": 20.0, "sync": [0x13, 0xF1, 0x85, 0xD3, 0xAC], "rxlen": 56} # Energy Count 3000
+
+wirelessweather\ESP32-FineOffset-FSK\SX1276ws.h
+    this->writeReg(0x02, 0x07); // bitrate 17.241
+    this->writeReg(0x03, 0x40);
+    this->writeReg(0x04, 0x03); // Fdev 60kHz
+    this->writeReg(0x05, 0xD7);
+    this->writeReg(0x06, 0xD9); // F 868.35MHz
+    this->writeReg(0x07, 0x16);
+    this->writeReg(0x08, 0x66);
+
+    //TODO: Can be removed when SX1276FSK pull request is accepted.
+    this->writeReg(0x19, 0x12); //BW88
+    this->writeReg(0x1a, 0x0a); //AFCBW100
+    //this->writeReg(0x19, 0x11); //BW166
+    //this->writeReg(0x1a, 0x01); //AFCBW250
+
+    //this->writeReg(0x1E, 0x08); //NoAFC
+
+    //TODO: Can be removed when SX1276FSK pull request is accepted.
+    this->writeReg(0x1F, 0xA8); // 2 byte preamble detector, tolerate 8 chip errors
+
+    //this->writeReg(0x29, 0xB0); // RssiThresh - dynamic in base class driver!
+
+    //this form of timeout is not supported on sx1276!
+    //this->writeReg(0x2B, 0x0C); // timeout after RSSI detected when payloadready does not occur
+
+    this->writeReg(0x27, 0x11); // 2 syncwords (instead of 3)
+    this->writeReg(0x28, 0x2D); // Sync values
+    this->writeReg(0x29, 0xD4);
+
+    this->writeReg(0x30, 0x00); // PacketConfig1 = fixed, no whitening, no crc, no filtering
+
+    this->writeReg(0x32, 0x11); // PayloadLength = 66 max
+
+    this->restartRx();
+
+    printf("SX1276ws init done\n");
+
+*/
 
     state = radio.setFrequencyDeviation(40); //
     RADIOLIB_STATE(state, "setFrequencyDeviation");
@@ -334,7 +380,7 @@ void rtl_433_ESP::initReceiver(byte inputPin, float receiveFrequency) {
 
 /**
  * @brief Is a signal available for decoding ?
- * 
+ *
  * @return int - which pulse train
  */
 int rtl_433_ESP::receivePulseTrain() {
@@ -348,7 +394,7 @@ int rtl_433_ESP::receivePulseTrain() {
 
 /**
  * @brief Main pulse receiver logic
- * 
+ *
  */
 void ICACHE_RAM_ATTR rtl_433_ESP::interruptHandler() {
   if (!_enabledReceiver || !receiveMode) {
@@ -402,7 +448,7 @@ void ICACHE_RAM_ATTR rtl_433_ESP::interruptHandler() {
 
 /**
  * @brief Reset received signal storage
- * 
+ *
  */
 void rtl_433_ESP::resetReceiver() {
   for (unsigned int i = 0; i < RECEIVER_BUFFER_SIZE; i++) {
@@ -418,8 +464,8 @@ void rtl_433_ESP::resetReceiver() {
 
 /**
  * @brief Enable signal receiver logic
- * 
- * @param inputPin 
+ *
+ * @param inputPin
  */
 void rtl_433_ESP::enableReceiver() {
   if (receiverGpio >= 0) {
@@ -431,7 +477,7 @@ void rtl_433_ESP::enableReceiver() {
 
 /**
  * @brief Disable receiver logic, and pulse receiver
- * 
+ *
  */
 void rtl_433_ESP::disableReceiver() {
   _enabledReceiver = false;
@@ -440,7 +486,7 @@ void rtl_433_ESP::disableReceiver() {
 
 /**
  * @brief watch for completed signals being received, and pass to decoder logic
- * 
+ *
  */
 void rtl_433_ESP::loop() {
   if (_enabledReceiver) {
@@ -529,8 +575,8 @@ void rtl_433_ESP::loop() {
 
 /**
  * @brief Background task to monitor RSSI signal level and start / end signal receiving
- * 
- * @param pvParameters 
+ *
+ * @param pvParameters
  */
 void rtl_433_ESP::rtl_433_ReceiverTask(void* pvParameters) {
   for (;;) {
@@ -663,10 +709,10 @@ void rtl_433_ESP::rtl_433_ReceiverTask(void* pvParameters) {
 
 /**
  * @brief Client callback to receive decoded signals
- * 
- * @param callback 
- * @param messageBuffer 
- * @param bufferSize 
+ *
+ * @param callback
+ * @param messageBuffer
+ * @param bufferSize
  */
 rtl_433_ESPCallBack _callback; // TODO: Use global object
 char* _messageBuffer;
@@ -683,8 +729,8 @@ void rtl_433_ESP::setCallback(rtl_433_ESPCallBack callback, char* messageBuffer,
 
 /**
  * @brief Set delta applied to average RSSI level for determining start and end of signal
- * 
- * @param newRssi 
+ *
+ * @param newRssi
  */
 void rtl_433_ESP::setRSSIThreshold(int newRssi) {
   rssiThresholdDelta = newRssi;
@@ -698,7 +744,7 @@ void rtl_433_ESP::setRSSIThreshold(int newRssi) {
 
 /**
  * @brief set OOK Threshold
- * 
+ *
  */
 #if defined(RF_SX1276) || defined(RF_SX1278)
 void rtl_433_ESP::setOOKThreshold(int newOokThreshold) {
@@ -715,8 +761,8 @@ void rtl_433_ESP::setOOKThreshold(int newOokThreshold) {
 
 /**
  * @brief This does not work
- * 
- * @param debug 
+ *
+ * @param debug
  */
 void rtl_433_ESP::setDebug(int debug) {
   rtlVerbose = debug;
@@ -725,8 +771,8 @@ void rtl_433_ESP::setDebug(int debug) {
 
 /**
  * @brief Send RTL_433_ESP status to serial port and client. Also send to serial port transceiver status.
- * 
- * @param status 
+ *
+ * @param status
  */
 void rtl_433_ESP::getStatus() {
   alogprintfLn(LOG_INFO, " ");

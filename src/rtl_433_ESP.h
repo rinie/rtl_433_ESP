@@ -131,7 +131,7 @@
 #  endif
 #endif
 
-#if defined(ARDUINO_TTGO_LoRa32_v21new) // LILYGO® Disaster-Radio LoRa V2.1_1.6.1
+#if defined(ARDUINO_TTGO_LoRa32_v21new) || defined(ARDUINO_TTGO_LoRa32)// LILYGO® Disaster-Radio LoRa V2.1_1.6.1
 #  ifndef RF_SX1278
 #    define RF_SX1276 "SX1276"
 #  endif
@@ -364,7 +364,7 @@ public:
  * @brief OOK/FSK Modulation
  * true = OOK
  * false = FSK
- * 
+ *
  */
   static bool ookModulation;
 
