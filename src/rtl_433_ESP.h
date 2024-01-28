@@ -222,6 +222,9 @@
     }
 #endif
 
+#ifdef RADIOLIBSX127X
+typedef int (*decodePulseGapDurationCallback)(const unsigned int duration);
+#endif
 /**
  * message - JSON formatted message from device
  */
@@ -289,6 +292,11 @@ public:
    */
   static void disableReceiver();
 
+#ifdef RADIOLIBSX127X
+  static void enableTransmitter();
+  static decodePulseGapDurationCallback _decodePulseGapDurationCallback;
+  static void enableReceiverPg(decodePulseGapDurationCallback pgdc);
+#endif
   /**
    * For SX127x transceiver module, Optimizing the OOK Floor Threshold
    */

@@ -126,7 +126,9 @@ int16_t rtl_433_ESP::_interrupt = NOT_AN_INTERRUPT;
 static byte receiverGpio = -1;
 
 static TaskHandle_t rtl_433_ReceiverHandle;
-
+#ifdef RADIOLIBSX127X
+decodePulseGapDurationCallback rtl_433_ESP::_decodePulseGapDurationCallback = 0;
+#endif
 /*----------------------------- End of variable initialization -----------------------------*/
 
 rtl_433_ESP::rtl_433_ESP() {
@@ -467,13 +469,24 @@ void rtl_433_ESP::resetReceiver() {
  *
  * @param inputPin
  */
+#ifdef RADIOLIBSX127X
+void rtl_433_ESP::enableReceiverPg(decodePulseGapDurationCallback pgdc) {
+	_decodePulseGapDurationCallback = pgdc;
+#else
 void rtl_433_ESP::enableReceiver() {
+#endif
   if (receiverGpio >= 0) {
     pinMode(receiverGpio, INPUT);
     attachInterrupt((uint8_t)receiverGpio, interruptHandler, CHANGE);
     _enabledReceiver = true;
   }
 }
+
+#ifdef RADIOLIBSX127X
+void rtl_433_ESP::enableReceiver() {
+		enableReceiverPg(nullptr);
+}
+#endif
 
 /**
  * @brief Disable receiver logic, and pulse receiver
@@ -484,6 +497,19 @@ void rtl_433_ESP::disableReceiver() {
   detachInterrupt((uint8_t)receiverGpio);
 }
 
+#ifdef RADIOLIBSX127X
+void rtl_433_ESP::enableTransmitter() {
+  if (receiverGpio >= 0) {
+	  pinMode(receiverGpio, OUTPUT);
+
+	  int state = radio.transmitDirect();
+	  RADIOLIB_STATE(state, "transmitDirect");
+
+	  state = radio.setOutputPower(13);
+	  RADIOLIB_STATE(state, "setOutputPower");
+  }
+}
+#endif
 /**
  * @brief watch for completed signals being received, and pass to decoder logic
  *

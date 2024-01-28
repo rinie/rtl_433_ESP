@@ -477,7 +477,28 @@ void rtl_433_DecoderTask(void* pvParameters) {
     r_cfg_t* cfg = &g_cfg;
     cfg->demod->pulse_data = *rtl_pulses;
     int events = 0;
-
+#ifdef RADIOLIBSX127X
+    if (rtl_433_ESP::_decodePulseGapDurationCallback) {
+	    for (int i = 0; i < rtl_pulses->num_pulses; i++) {
+			int ip = rtl_433_ESP::_decodePulseGapDurationCallback(rtl_pulses->pulse[i]);
+			if (ip < 0) {
+				events = 0;
+			}
+			if (ip != 0) {
+				break;
+			}
+			int ig = rtl_433_ESP::_decodePulseGapDurationCallback(rtl_pulses->gap[i]);
+			if (ig < 0) {
+				events = 0;
+			}
+			if (ig != 0) {
+				break;
+			}
+			events = 1;
+		}
+	}
+	if (events == 0)
+#endif
     if (rtl_433_ESP::ookModulation) {
       events = run_ook_demods(&cfg->demod->r_devs, rtl_pulses);
     } else {

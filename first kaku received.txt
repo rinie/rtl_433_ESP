@@ -212,3 +212,14 @@ N: Received message : {"model":"Smoke-GS558","id":27281,"unit":0,"learn":0,"code
 rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
 rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
 rtl_433_ESP(7): Average RSSI Signal -88 dbm, adjusted RSSI Threshold -79, samples 50000
+
+N: Send on /RTL_433toMQTT/KlikAanKlikUit-Switch/8886094 msg {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-58,"duration":387000}
+
+
+17:47:20.026 MQT: tele/tasmota_45613C/RESULT = {"Time":"2024-01-27T17:47:20","RfReceived":{"Sync":9810,"Low":320,"High":960,"Data":"104015","RfKey":"None"}}
+17:47:20.833 MQT: tele/tasmota_45613C/RESULT = {"Time":"2024-01-27T17:47:20","RfReceived":{"Sync":9810,"Low":320,"High":930,"Data":"101015","RfKey":"None"}}
+17:47:21.634 MQT: tele/tasmota_45613C/RESULT = {"Time":"2024-01-27T17:47:21","RfReceived":{"Sync":9840,"Low":340,"High":960,"Data":"100015","RfKey":"None"}}
+N: Send on /RTL_433toMQTT/Smoke-GS558/16400 msg {"model":"Smoke-GS558","id":16400,"unit":8,"learn":0,"code":"a80208","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-53,"duration":310996}
+N: Send on /RTL_433toMQTT/Smoke-GS558/16448 msg {"model":"Smoke-GS558","id":16448,"unit":8,"learn":0,"code":"a80808","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-53,"duration":313996}
+N: Send on /RTL_433toMQTT/Smoke-GS558/16384 msg {"model":"Smoke-GS558","id":16384,"unit":8,"learn":0,"code":"a80008","protocol":"Wireless Smoke and Heat Detector GS 558","rssi":-53,"duration":315996}
+N: Send on /RTL_433toMQTT/Waveman-Switch/1/C msg {"model":"Waveman-Switch","id":"C","channel":1,"button":1,"state":"on","protocol":"Waveman Switch Transmitter","rssi":-53,"duration":315996}
