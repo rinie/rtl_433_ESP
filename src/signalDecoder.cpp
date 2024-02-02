@@ -479,8 +479,10 @@ void rtl_433_DecoderTask(void* pvParameters) {
     int events = 0;
 #ifdef RADIOLIBSX127X
     if (rtl_433_ESP::_decodePulseGapDurationCallback) {
+		int ip = 0;
+		int ig = 0;
 	    for (int i = 0; i < rtl_pulses->num_pulses; i++) {
-			int ip = rtl_433_ESP::_decodePulseGapDurationCallback(rtl_pulses->pulse[i]);
+			ip = rtl_433_ESP::_decodePulseGapDurationCallback(rtl_pulses->pulse[i]);
 			if (ip < 0) {
 				events = 0;
 			}
@@ -496,6 +498,9 @@ void rtl_433_DecoderTask(void* pvParameters) {
 			}
 			events = 1;
 		}
+	  if ((ip == 0) && (ig == 0)) { // signal end with 0 unless decoder ended loop
+	  	ip = rtl_433_ESP::_decodePulseGapDurationCallback(0);
+	  }
 	}
 	if (events == 0)
 #endif

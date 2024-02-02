@@ -1,3 +1,18 @@
+Same sensor on all RF via RTL_433
+N: OpenMQTTGateway modules: ["LilyGo_SSD1306","WebUI","RF","RF2","Pilight","rtl_433"]
+
+N: Send on /RF2toMQTT msg {"unit":0,"groupBit":1,"period":252,"address":8886094,"switchType":0}
+
+N: Send on /PilighttoMQTT msg {"message":{"id":8886094,"all":1,"state":"off"},"protocol":"smartwares_switch","value":"","repeats":2,"status":2}
+N: Send on /PilighttoMQTT msg {"message":{"id":8886094,"all":1,"state":"off"},"protocol":"arctech_switch","value":"","repeats":2,"status":2}
+N: Send on /PilighttoMQTT msg {"message":{"id":8886094,"all":1,"state":"down"},"protocol":"arctech_screen","value":"","repeats":2,"status":2}
+N: Send on /PilighttoMQTT msg {"message":{"id":8886094,"all":1,"state":"off"},"protocol":"arctech_dimmer","value":"","repeats":2,"status":2}
+N: Send on /PilighttoMQTT msg {"message":{"id":8886094,"all":1,"state":"closed"},"protocol":"arctech_contact","value":"","repeats":2,"status":2}
+
+N: Send on /433toMQTT msg {"value":78515,"protocol":29,"length":17,"delay":218,"tre_state":"-","binary":"10011001010110011","raw":"10052,260,252,256,1280,192,1284,252,320,192,324,188,1344,192,1348,188,320,256,1280,256,320,192,1284,252,320,193,319,192,1344,197,1339,192,320,260","frequency":433.92}
+
+N: Send on /RTL_433toMQTT/KlikAanKlikUit-Switch/8886094 msg {"model":"KlikAanKlikUit-Switch","id":8886094,"unit":0,"group_call":"Yes","command":"Off","dim":"No","dim_value":0,"protocol":"KlikAanKlikUit Wireless Switch","rssi":-48,"duration":373995}
+
 rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
 configsip: 188777542, SPIWP:0xee
 clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
