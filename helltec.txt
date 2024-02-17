@@ -16,3 +16,62 @@ WH65B External sensor every 16 seconds
 10:45:34:537 -> N: Received message : {"model":"Fineoffset-WH65B","id":232,"battery_ok":1,"temperature_C":0.3,"humidity":92,"wind_dir_deg":171,"wind_avg_m_s":2.1675,"wind_max_m_s":2.55,"rain_mm":1743.20203,"uv":39,"uvi":0,"light_lux":5144.0,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-62,"duration":10999}
 10:45:35:724 -> N: Received message : {"model":"Fineoffset-WH32B","id":217,"battery_ok":1,"temperature_C":17.7,"humidity":42,"pressure_hPa":1008.60004,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-67,"duration":52000}
 10:45:50:507 -> N: Received message : {"model":"Fineoffset-WH65B","id":232,"battery_ok":1,"temperature_C":0.3,"humidity":92,"wind_dir_deg":266,"wind_avg_m_s":2.48625,"wind_max_m_s":3.06,"rain_mm":1743.20203,"uv":39,"uvi":0,"light_lux":5179.0,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-61,"duration":11000}
+
+---- Opened the serial port COM8 ----
+ets Jun  8 2016 00:22:57
+
+rst:0x1 (POWERON_RESET),boot:0x17 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:1184
+load:0x40078000,len:13192
+load:0x40080400,len:3028
+entry 0x400805e4
+N:  
+N: ****** setup ******
+----- SX127x Status -----
+RegOpMode: 0x0d
+RegPacketConfig1: 0x00
+RegPacketConfig2: 0x00
+RegBitrateMsb: 0x07
+RegBitrateLsb: 0x40
+RegRxBw: 0x12
+RegAfcBw: 0x02
+-------------------------
+RegLna: 0x20
+RegRxConfig: 0x08
+RegRssiConfig: 0x00
+-------------------------
+RegDioMapping1: 0x00
+----------- FSK --------------
+FDEV_MSB: 0x02
+FDEV_LSB: 0x8f
+----- SX127x Status -----
+N: ****** setup complete ******
+----- SX127x Status -----
+RegOpMode: 0x0d
+RegPacketConfig1: 0x00
+RegPacketConfig2: 0x00
+RegBitrateMsb: 0x07
+RegBitrateLsb: 0x40
+RegRxBw: 0x12
+RegAfcBw: 0x02
+-------------------------
+RegLna: 0x20
+RegRxConfig: 0x08
+RegRssiConfig: 0x00
+-------------------------
+RegDioMapping1: 0x00
+----------- FSK --------------
+FDEV_MSB: 0x02
+FDEV_LSB: 0x8f
+----- SX127x Status -----
+N: Received message : {"model":"Fineoffset-WH65B","id":232,"battery_ok":1,"temperature_C":11.9,"humidity":88,"wind_dir_deg":203,"wind_avg_m_s":2.295,"wind_max_m_s":3.57,"rain_mm":1821.68811,"uv":121,"uvi":0,"light_lux":13684.0,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-74,"duration":11000}
+N: Received message : {"model":"Fineoffset-WH32B","id":217,"battery_ok":1,"temperature_C":18.0,"humidity":56,"pressure_hPa":1012.70001,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-75,"duration":53000}
+N: Received message : {"model":"Fineoffset-WH65B","id":232,"battery_ok":1,"temperature_C":11.9,"humidity":88,"wind_dir_deg":206,"wind_avg_m_s":2.1675,"wind_max_m_s":3.06,"rain_mm":1821.68811,"uv":121,"uvi":0,"light_lux":13722.0,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-74,"duration":11000}
+rtl_433_ESP(7): Average RSSI Signal -119 dbm, adjusted RSSI Threshold -110, samples 50000
+N: Received message : {"model":"Fineoffset-WH65B","id":232,"battery_ok":1,"temperature_C":11.9,"humidity":88,"wind_dir_deg":221,"wind_avg_m_s":4.27125,"wind_max_m_s":5.61,"rain_mm":1821.68811,"uv":139,"uvi":0,"light_lux":14180.0,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-77,"duration":11000}
+N: Received message : {"model":"Fineoffset-WH65B","id":232,"battery_ok":1,"temperature_C":11.9,"humidity":88,"wind_dir_deg":276,"wind_avg_m_s":4.65375,"wind_max_m_s":6.63,"rain_mm":1821.68811,"uv":156,"uvi":0,"light_lux":14803.0,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-75,"duration":11001}
+N: Received message : {"model":"Fineoffset-WH32B","id":217,"battery_ok":1,"temperature_C":18.0,"humidity":55,"pressure_hPa":1012.60004,"mic":"CRC","protocol":"Fine Offset Electronics, WH25, WH32B, WH24, WH65B, HP1000, Misol WS2320 Temperature/Humidity/Pressure Sensor","rssi":-73,"duration":53000}
+

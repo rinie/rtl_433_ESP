@@ -127,6 +127,7 @@ static byte receiverGpio = -1;
 
 static TaskHandle_t rtl_433_ReceiverHandle;
 #ifdef RADIOLIBSX127X
+static byte _inputPin;
 decodePulseGapDurationCallback rtl_433_ESP::_decodePulseGapDurationCallback = 0;
 #endif
 /*----------------------------- End of variable initialization -----------------------------*/
@@ -146,7 +147,9 @@ void rtl_433_ESP::initReceiver(byte inputPin, float receiveFrequency) {
 #if defined(RF_SX1276) || defined(RF_SX1278)
   radio.reset();
 #endif
-
+#ifdef RADIOLIBSX127X
+  _inputPin = inputPin;
+#endif
   receiverGpio = digitalPinToInterrupt(inputPin);
 #ifdef MEMORY_DEBUG
   logprintfLn(LOG_INFO, "Pre initReceiver: %d", ESP.getFreeHeap());
@@ -499,15 +502,18 @@ void rtl_433_ESP::disableReceiver() {
 
 #ifdef RADIOLIBSX127X
 void rtl_433_ESP::enableTransmitter() {
+  disableReceiver();
   if (receiverGpio >= 0) {
 	  pinMode(receiverGpio, OUTPUT);
-
-	  int state = radio.transmitDirect();
-	  RADIOLIB_STATE(state, "transmitDirect");
-
-	  state = radio.setOutputPower(13);
-	  RADIOLIB_STATE(state, "setOutputPower");
   }
+
+  int state = radio.setDataShapingOOK(0); // Default 0 ( 0, 1, 2 )
+  RADIOLIB_STATE(state, "setDataShapingOOK");
+  state = radio.transmitDirect();
+  RADIOLIB_STATE(state, "transmitDirect");
+
+  state = radio.setOutputPower(13, true);
+  RADIOLIB_STATE(state, "setOutputPower");
 }
 #endif
 /**
