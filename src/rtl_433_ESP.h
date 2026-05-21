@@ -292,6 +292,13 @@ public:
    */
   static void disableReceiver();
 
+  /**
+   * Transmit a raw OOK pulse train on CC1101.
+   * timings_us: alternating HIGH/LOW durations in microseconds, starting HIGH.
+   * count: number of entries.
+   */
+  static void sendPulses(uint32_t* timings_us, uint16_t count);
+
 #ifdef RADIOLIBSX127X
   static void enableTransmitter();
   static decodePulseGapDurationCallback _decodePulseGapDurationCallback;

@@ -501,6 +501,162 @@ void rtl_433_ESP::disableReceiver() {
 }
 
 #ifdef RADIOLIBSX127X
+#if 1
+void setBitrate (float br) {
+  if (br < 489) {
+    br = 0xFFFF;
+  } else {
+    br = 32000000L / br;
+  }
+#if 0
+  writeReg(REG_BRMSB, br >> 8);
+  writeReg(REG_BRMSB + 1, br);
+
+  writeReg(REG_OPMODE, 0x00);         // OpMode = sleep
+  writeReg(REG_DATAMOD, 0x08);        // DataModul = packet mode, OOK
+  writeReg(REG_PREAMPSIZE, 0x00);     // PreambleSize = 0 NO PREAMBLE
+  writeReg(REG_SYNCCONFIG, 0x00);     // SyncConfig = sync OFF
+  writeReg(REG_PKTCONFIG1, 0x80);     // PacketConfig1 = variable length, advanced items OFF
+  writeReg(REG_PAYLOADLEN, 0x00);     // PayloadLength = 0, unlimited
+#else // try RADIOLIB_GODMODE until working
+int state;
+	state = radio.setMode(RADIOLIB_SX127X_STANDBY);
+    RADIOLIB_STATE(state, "setMode");
+    state = radio.setOOK(true);
+    RADIOLIB_STATE(state, "setOOK");
+	state = radio.variablePacketLengthMode();
+    RADIOLIB_STATE(state, "variablePacketLengthMode");
+    state = radio.setBitRate(br/1000.0);
+    RADIOLIB_STATE(state, "setBitRate");
+	state = radio.setOutputPower(13, false);
+	RADIOLIB_STATE(state, "setOutputPower");
+	radio.clearIRQFlags();
+
+#endif
+}
+
+#if 1
+int16_t _setMode(uint8_t mode) {
+  uint8_t checkMask = 0xFE;
+  return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, mode, 2, 0, 5, checkMask));
+}
+
+static void sendook(uint8_t header, uint8_t* ptr, int len) {
+  //setMode(MODE_TRANSMITTER);
+  int16_t state = radio.setMode(RADIOLIB_SX127X_STANDBY);
+  RADIOLIB_STATE(state, "setModeStandby");
+
+  //write 8 bits OFF to start with
+  //_mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_FIFO, ptr, len);
+
+  _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, 0);
+  for (int i = 0; i < len; ++i)
+    _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, ptr[i]);
+  //  for (int i = 0; i < len; ++i)
+  //      printf("%02X", ((const uint8_t*) ptr)[i]);
+  //  printf("\n");
+
+  //send after filling FIFO (RFM should be in sleep or standby)
+
+  state = radio.setMode(RADIOLIB_SX127X_TX);
+  RADIOLIB_STATE(state, "setModeTransmit");
+  _mod->delay(1000);
+  //while ((_mod->SPIreadRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2) & RADIOLIB_SX127X_FLAG_PACKET_SENT) == 0)
+  //{ //nop
+  //};
+
+  state = radio.setMode(RADIOLIB_SX127X_STANDBY);
+  RADIOLIB_STATE(state, "setModeStandby after send");
+}
+#endif
+
+//Packet mode OOK transmit buffer
+uint8_t ookBuf[66];
+uint8_t k = 0;
+uint8_t l = 0;
+
+//Packet mode OOK add one packet-bit to transmit buffer
+void addOutBit(uint8_t v) {
+  if (k <= 65) {
+    ookBuf[k] |= (v & 1) << (7 - l);
+    if (++l == 8) {
+      l = 0;
+      k++;
+      if (k > 65) {
+        logprintfLn(LOG_INFO, "FIFO size exceeded. Partial transmission");
+      } else {
+        ookBuf[k] = 0;
+      }
+    }
+  }
+}
+
+//Packet mode OOK send complete packet
+void sendPacket() {
+  //pad ookBuf with OFF (=0) to fill last byte.
+//  while (l)
+//    addOutBit(0);
+        for (uint8_t i = 0; i < k; ++i) {
+            alogprintf(LOG_INFO,"%02x", ookBuf[i]);
+		}
+        alogprintfLn(LOG_INFO, "");
+  alogprintfLn(LOG_INFO, "SendPacket: 0x%.2x", k);
+  sendook(0, ookBuf, k);
+  //int state = radio.transmit(ookBuf, k);
+  //RADIOLIB_STATE(state, "transmit aka sendPacket");
+}
+
+void startOOK(uint32_t br) {
+  //clear the ookBuf
+  k = 0;
+  l = 0;
+  ookBuf[0] = 0;
+  //ookBuf[1] = 0;
+  //k = 1;
+  setBitrate(br);
+}
+
+void stopOOK() {
+  sendPacket();
+}
+
+static void kakuSend(char addr, byte device, byte on) {
+  int cmd = 0x600 | ((device - 1) << 4) | ((addr - 1) & 0xF);
+  if (on)
+    cmd |= 0x800;
+  for (byte i = 0; i < 4; ++i) {
+    startOOK(2667.0); //PACKET mode: 375us (2667bps) largest common divisor
+    int sr = cmd;
+    for (uint8_t bit = 0; bit < 12; ++bit) {
+      addOutBit(1);
+      addOutBit(0);
+      addOutBit(0);
+      addOutBit(0);
+      uint8_t n = (sr & 1 ? 3 : 1);
+      for (uint8_t on = n; on > 0; on--)
+        addOutBit(1);
+      for (uint8_t off = 4 - n; off > 0; off--)
+        addOutBit(0);
+      sr >>= 1;
+    }
+    addOutBit(1);
+    addOutBit(0);
+    stopOOK();
+    //delay(11); // approximate
+  }
+}
+
+void rtl_433_ESP::enableTransmitter() {
+	// try FIFO bitrate transmit...
+  disableReceiver();
+  alogprintfLn(LOG_INFO, "ChipVersion: 0x%.2x", radio.getChipVersion());
+  getModuleStatus();
+  logprintfLn(LOG_INFO, "Try kakuSend");
+  kakuSend('C', 2, 1);
+  getModuleStatus();
+}
+
+#else
 void rtl_433_ESP::enableTransmitter() {
   disableReceiver();
   if (receiverGpio >= 0) {
@@ -516,6 +672,41 @@ void rtl_433_ESP::enableTransmitter() {
   RADIOLIB_STATE(state, "setOutputPower");
 }
 #endif
+#endif
+
+#ifdef RF_CC1101
+void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
+  disableReceiver();
+  if (receiverGpio >= 0) {
+    pinMode(receiverGpio, OUTPUT);
+  }
+  int state = radio.setDataShapingOOK(0);
+  RADIOLIB_STATE(state, "setDataShapingOOK");
+  state = radio.transmitDirect();
+  RADIOLIB_STATE(state, "transmitDirect");
+  state = radio.setOutputPower(13, true);
+  RADIOLIB_STATE(state, "setOutputPower");
+
+  bool level = true;
+  for (uint16_t i = 0; i < count; i++) {
+    digitalWrite(receiverGpio, level ? HIGH : LOW);
+    delayMicroseconds(timings_us[i]);
+    level = !level;
+  }
+  digitalWrite(receiverGpio, LOW);
+
+  radio.SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
+  radio.SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
+  enableReceiver();
+}
+#else
+void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
+  // SX127X transmit not yet implemented
+  (void)timings_us;
+  (void)count;
+}
+#endif
+
 /**
  * @brief watch for completed signals being received, and pass to decoder logic
  *
