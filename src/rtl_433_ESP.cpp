@@ -742,6 +742,13 @@ void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
   state = radio.setDataShapingOOK(0);  // no filter shaping for clean TX edges
   RADIOLIB_STATE(state, "TX setDataShapingOOK");
 
+  // No preamble — default is 3 bytes of 0xAA which would corrupt the frame
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK, 0x00);
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK, 0x00);
+
+  // No sync word insertion in TX
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, 0x00);  // bit3=SyncOn=0
+
   // Fixed-length packet, no DC-free encoding, no CRC
   _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 0x00, 7, 7);  // bit7=0: fixed length
   _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 0x00, 6, 5);  // bits[6:5]=00: no DC-free
