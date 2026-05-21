@@ -699,9 +699,85 @@ void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
   radio.SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
   enableReceiver();
 }
+#elif defined(RF_SX1276) || defined(RF_SX1278)
+void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
+  if (count == 0) return;
+
+  // Base period T = first timing (µs). All others are encoded as round(t/T) bits.
+  // NewKAKU: 10.5T start-low rounds to 11T (+5% error, within decoder tolerance).
+  // Frame sizes at T=260µs:  on/off = 39 bytes,  dim = 43 bytes — both fit the 64-byte FIFO.
+  uint32_t base_us = timings_us[0];
+
+  // Encode pulse train into MSB-first OOK byte stream: 1=carrier on, 0=carrier off
+  uint8_t buf[64] = {};
+  uint16_t bit_pos = 0;
+  bool level = true;
+  for (uint16_t i = 0; i < count; i++) {
+    uint16_t n = (uint16_t)((timings_us[i] + base_us / 2) / base_us);
+    if (n == 0) n = 1;
+    uint8_t bv = level ? 1 : 0;
+    for (uint16_t b = 0; b < n && bit_pos < 512; b++) {
+      buf[bit_pos >> 3] |= (bv << (7 - (bit_pos & 7)));
+      bit_pos++;
+    }
+    level = !level;
+  }
+  uint8_t nbytes = (uint8_t)((bit_pos + 7) >> 3);
+  if (nbytes > 64) {
+    logprintfLn(LOG_WARN, "sendPulses: frame %u bytes exceeds 64-byte SX127X FIFO", nbytes);
+    return;
+  }
+
+  disableReceiver();
+
+  float bitrate_kbps = 1000.0f / (float)base_us;  // µs period → kbps
+
+  int16_t state;
+  state = radio.standby();
+  RADIOLIB_STATE(state, "TX standby");
+  state = radio.setOOK(true);
+  RADIOLIB_STATE(state, "TX setOOK");
+  state = radio.setBitRate(bitrate_kbps);
+  RADIOLIB_STATE(state, "TX setBitRate");
+  state = radio.setDataShapingOOK(0);  // no filter shaping for clean TX edges
+  RADIOLIB_STATE(state, "TX setDataShapingOOK");
+
+  // Fixed-length packet, no DC-free encoding, no CRC
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 0x00, 7, 7);  // bit7=0: fixed length
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 0x00, 6, 5);  // bits[6:5]=00: no DC-free
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 0x00, 4, 4);  // bit4=0: no CRC
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH_FSK, nbytes);
+
+  // Fill FIFO then start TX
+  for (uint8_t i = 0; i < nbytes; i++)
+    _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, buf[i]);
+
+  state = radio.setMode(RADIOLIB_SX127X_TX);
+  RADIOLIB_STATE(state, "TX setModeTX");
+
+  // Poll PacketSent flag (REG_IRQ_FLAGS_2 bit3), timeout 500 ms
+  uint32_t t0 = millis();
+  while (!(_mod->SPIreadRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2) & RADIOLIB_SX127X_FLAG_PACKET_SENT)) {
+    if (millis() - t0 > 500) {
+      logprintfLn(LOG_WARN, "sendPulses: TX timeout");
+      break;
+    }
+    delayMicroseconds(100);
+  }
+
+  // Restore OOK receive config (mirror of initReceiver() OOK path)
+  state = radio.setDataShapingOOK(2);  // restore RX shaping
+  RADIOLIB_STATE(state, "RX restore setDataShapingOOK");
+  state = radio.setBitRate(1.2f);      // restore 1.2 kbps threshold-detection rate
+  RADIOLIB_STATE(state, "RX restore setBitRate");
+  state = radio.receiveDirect();       // back to continuous OOK RX
+  RADIOLIB_STATE(state, "RX restore receiveDirect");
+
+  enableReceiver();  // re-attach GPIO interrupt
+}
 #else
 void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
-  // SX127X transmit not yet implemented
+  // No transmit support for this radio type
   (void)timings_us;
   (void)count;
 }
