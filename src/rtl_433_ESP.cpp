@@ -724,7 +724,7 @@ void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
   }
   uint8_t nbytes = (uint8_t)((bit_pos + 7) >> 3);
   if (nbytes > 64) {
-    logprintfLn(LOG_WARN, "sendPulses: frame %u bytes exceeds 64-byte SX127X FIFO", nbytes);
+    logprintfLn(LOG_WARNING, "sendPulses: frame %u bytes exceeds 64-byte SX127X FIFO", nbytes);
     return;
   }
 
@@ -759,14 +759,14 @@ void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
   for (uint8_t i = 0; i < nbytes; i++)
     _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, buf[i]);
 
-  state = radio.setMode(RADIOLIB_SX127X_TX);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, RADIOLIB_SX127X_TX, 2, 0, 5, 0xFE);
   RADIOLIB_STATE(state, "TX setModeTX");
 
   // Poll PacketSent flag (REG_IRQ_FLAGS_2 bit3), timeout 500 ms
   uint32_t t0 = millis();
   while (!(_mod->SPIreadRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2) & RADIOLIB_SX127X_FLAG_PACKET_SENT)) {
     if (millis() - t0 > 500) {
-      logprintfLn(LOG_WARN, "sendPulses: TX timeout");
+      logprintfLn(LOG_WARNING, "sendPulses: TX timeout");
       break;
     }
     delayMicroseconds(100);
