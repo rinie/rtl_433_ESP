@@ -126,7 +126,10 @@ int16_t rtl_433_ESP::_interrupt = NOT_AN_INTERRUPT;
 static byte receiverGpio = -1;
 
 static TaskHandle_t rtl_433_ReceiverHandle;
-
+#ifdef RADIOLIBSX127X
+static byte _inputPin;
+decodePulseGapDurationCallback rtl_433_ESP::_decodePulseGapDurationCallback = 0;
+#endif
 /*----------------------------- End of variable initialization -----------------------------*/
 
 rtl_433_ESP::rtl_433_ESP() {
@@ -136,7 +139,7 @@ rtl_433_ESP::rtl_433_ESP() {
 
 /**
  * @brief Initialize Transceiver and rtl_433 decoders
- * 
+ *
  * @param inputPin - GPIO of receiver
  * @param receiveFrequency - receive frequency
  */
@@ -144,7 +147,9 @@ void rtl_433_ESP::initReceiver(byte inputPin, float receiveFrequency) {
 #if defined(RF_SX1276) || defined(RF_SX1278)
   radio.reset();
 #endif
-
+#ifdef RADIOLIBSX127X
+  _inputPin = inputPin;
+#endif
   receiverGpio = digitalPinToInterrupt(inputPin);
 #ifdef MEMORY_DEBUG
   logprintfLn(LOG_INFO, "Pre initReceiver: %d", ESP.getFreeHeap());
@@ -272,6 +277,52 @@ void rtl_433_ESP::initReceiver(byte inputPin, float receiveFrequency) {
     // Rx bandwidth:                        270.0 kHz (CC1101) / 250 kHz (SX1276)
     // output power:                        10 dBm
     // preamble length:                     32 bits
+/*
+RaspyRFM
+
+PARAM_TX35 = {"duration": 15, "baudrate": 9.579,  "sync": [0x2d, 0xd4], "rxlen": 14} # LaCrosse TX35, EMT7110
+PARAM_TX29  = {"duration": 15, "baudrate": 17.241, "sync": [0x2d, 0xd4], "rxlen": 5} # LaCrosse TX29
+PARAM_BRESSER = {"duration": 15, "baudrate": 8.000, "sync": [0x2d, 0xd4], "rxlen": 25} # Bresser 7in1 weather
+PARAM_EC3K = {"duration": 15, "baudrate": 20.0, "sync": [0x13, 0xF1, 0x85, 0xD3, 0xAC], "rxlen": 56} # Energy Count 3000
+
+wirelessweather\ESP32-FineOffset-FSK\SX1276ws.h
+    this->writeReg(0x02, 0x07); // bitrate 17.241
+    this->writeReg(0x03, 0x40);
+    this->writeReg(0x04, 0x03); // Fdev 60kHz
+    this->writeReg(0x05, 0xD7);
+    this->writeReg(0x06, 0xD9); // F 868.35MHz
+    this->writeReg(0x07, 0x16);
+    this->writeReg(0x08, 0x66);
+
+    //TODO: Can be removed when SX1276FSK pull request is accepted.
+    this->writeReg(0x19, 0x12); //BW88
+    this->writeReg(0x1a, 0x0a); //AFCBW100
+    //this->writeReg(0x19, 0x11); //BW166
+    //this->writeReg(0x1a, 0x01); //AFCBW250
+
+    //this->writeReg(0x1E, 0x08); //NoAFC
+
+    //TODO: Can be removed when SX1276FSK pull request is accepted.
+    this->writeReg(0x1F, 0xA8); // 2 byte preamble detector, tolerate 8 chip errors
+
+    //this->writeReg(0x29, 0xB0); // RssiThresh - dynamic in base class driver!
+
+    //this form of timeout is not supported on sx1276!
+    //this->writeReg(0x2B, 0x0C); // timeout after RSSI detected when payloadready does not occur
+
+    this->writeReg(0x27, 0x11); // 2 syncwords (instead of 3)
+    this->writeReg(0x28, 0x2D); // Sync values
+    this->writeReg(0x29, 0xD4);
+
+    this->writeReg(0x30, 0x00); // PacketConfig1 = fixed, no whitening, no crc, no filtering
+
+    this->writeReg(0x32, 0x11); // PayloadLength = 66 max
+
+    this->restartRx();
+
+    printf("SX1276ws init done\n");
+
+*/
 
     state = radio.setFrequencyDeviation(40); //
     RADIOLIB_STATE(state, "setFrequencyDeviation");
@@ -334,7 +385,7 @@ void rtl_433_ESP::initReceiver(byte inputPin, float receiveFrequency) {
 
 /**
  * @brief Is a signal available for decoding ?
- * 
+ *
  * @return int - which pulse train
  */
 int rtl_433_ESP::receivePulseTrain() {
@@ -348,7 +399,7 @@ int rtl_433_ESP::receivePulseTrain() {
 
 /**
  * @brief Main pulse receiver logic
- * 
+ *
  */
 void ICACHE_RAM_ATTR rtl_433_ESP::interruptHandler() {
   if (!_enabledReceiver || !receiveMode) {
@@ -402,7 +453,7 @@ void ICACHE_RAM_ATTR rtl_433_ESP::interruptHandler() {
 
 /**
  * @brief Reset received signal storage
- * 
+ *
  */
 void rtl_433_ESP::resetReceiver() {
   for (unsigned int i = 0; i < RECEIVER_BUFFER_SIZE; i++) {
@@ -418,10 +469,15 @@ void rtl_433_ESP::resetReceiver() {
 
 /**
  * @brief Enable signal receiver logic
- * 
- * @param inputPin 
+ *
+ * @param inputPin
  */
+#ifdef RADIOLIBSX127X
+void rtl_433_ESP::enableReceiverPg(decodePulseGapDurationCallback pgdc) {
+	_decodePulseGapDurationCallback = pgdc;
+#else
 void rtl_433_ESP::enableReceiver() {
+#endif
   if (receiverGpio >= 0) {
     pinMode(receiverGpio, INPUT);
     attachInterrupt((uint8_t)receiverGpio, interruptHandler, CHANGE);
@@ -429,18 +485,314 @@ void rtl_433_ESP::enableReceiver() {
   }
 }
 
+#ifdef RADIOLIBSX127X
+void rtl_433_ESP::enableReceiver() {
+		enableReceiverPg(nullptr);
+}
+#endif
+
 /**
  * @brief Disable receiver logic, and pulse receiver
- * 
+ *
  */
 void rtl_433_ESP::disableReceiver() {
   _enabledReceiver = false;
   detachInterrupt((uint8_t)receiverGpio);
 }
 
+#ifdef RADIOLIBSX127X
+#if 1
+void setBitrate (float br) {
+  if (br < 489) {
+    br = 0xFFFF;
+  } else {
+    br = 32000000L / br;
+  }
+#if 0
+  writeReg(REG_BRMSB, br >> 8);
+  writeReg(REG_BRMSB + 1, br);
+
+  writeReg(REG_OPMODE, 0x00);         // OpMode = sleep
+  writeReg(REG_DATAMOD, 0x08);        // DataModul = packet mode, OOK
+  writeReg(REG_PREAMPSIZE, 0x00);     // PreambleSize = 0 NO PREAMBLE
+  writeReg(REG_SYNCCONFIG, 0x00);     // SyncConfig = sync OFF
+  writeReg(REG_PKTCONFIG1, 0x80);     // PacketConfig1 = variable length, advanced items OFF
+  writeReg(REG_PAYLOADLEN, 0x00);     // PayloadLength = 0, unlimited
+#else // try RADIOLIB_GODMODE until working
+int state;
+	state = radio.setMode(RADIOLIB_SX127X_STANDBY);
+    RADIOLIB_STATE(state, "setMode");
+    state = radio.setOOK(true);
+    RADIOLIB_STATE(state, "setOOK");
+	state = radio.variablePacketLengthMode();
+    RADIOLIB_STATE(state, "variablePacketLengthMode");
+    state = radio.setBitRate(br/1000.0);
+    RADIOLIB_STATE(state, "setBitRate");
+	state = radio.setOutputPower(13, false);
+	RADIOLIB_STATE(state, "setOutputPower");
+	radio.clearIRQFlags();
+
+#endif
+}
+
+#if 1
+int16_t _setMode(uint8_t mode) {
+  uint8_t checkMask = 0xFE;
+  return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, mode, 2, 0, 5, checkMask));
+}
+
+static void sendook(uint8_t header, uint8_t* ptr, int len) {
+  //setMode(MODE_TRANSMITTER);
+  int16_t state = radio.setMode(RADIOLIB_SX127X_STANDBY);
+  RADIOLIB_STATE(state, "setModeStandby");
+
+  //write 8 bits OFF to start with
+  //_mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_FIFO, ptr, len);
+
+  _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, 0);
+  for (int i = 0; i < len; ++i)
+    _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, ptr[i]);
+  //  for (int i = 0; i < len; ++i)
+  //      printf("%02X", ((const uint8_t*) ptr)[i]);
+  //  printf("\n");
+
+  //send after filling FIFO (RFM should be in sleep or standby)
+
+  state = radio.setMode(RADIOLIB_SX127X_TX);
+  RADIOLIB_STATE(state, "setModeTransmit");
+  _mod->delay(1000);
+  //while ((_mod->SPIreadRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2) & RADIOLIB_SX127X_FLAG_PACKET_SENT) == 0)
+  //{ //nop
+  //};
+
+  state = radio.setMode(RADIOLIB_SX127X_STANDBY);
+  RADIOLIB_STATE(state, "setModeStandby after send");
+}
+#endif
+
+//Packet mode OOK transmit buffer
+uint8_t ookBuf[66];
+uint8_t k = 0;
+uint8_t l = 0;
+
+//Packet mode OOK add one packet-bit to transmit buffer
+void addOutBit(uint8_t v) {
+  if (k <= 65) {
+    ookBuf[k] |= (v & 1) << (7 - l);
+    if (++l == 8) {
+      l = 0;
+      k++;
+      if (k > 65) {
+        logprintfLn(LOG_INFO, "FIFO size exceeded. Partial transmission");
+      } else {
+        ookBuf[k] = 0;
+      }
+    }
+  }
+}
+
+//Packet mode OOK send complete packet
+void sendPacket() {
+  //pad ookBuf with OFF (=0) to fill last byte.
+//  while (l)
+//    addOutBit(0);
+        for (uint8_t i = 0; i < k; ++i) {
+            alogprintf(LOG_INFO,"%02x", ookBuf[i]);
+		}
+        alogprintfLn(LOG_INFO, "");
+  alogprintfLn(LOG_INFO, "SendPacket: 0x%.2x", k);
+  sendook(0, ookBuf, k);
+  //int state = radio.transmit(ookBuf, k);
+  //RADIOLIB_STATE(state, "transmit aka sendPacket");
+}
+
+void startOOK(uint32_t br) {
+  //clear the ookBuf
+  k = 0;
+  l = 0;
+  ookBuf[0] = 0;
+  //ookBuf[1] = 0;
+  //k = 1;
+  setBitrate(br);
+}
+
+void stopOOK() {
+  sendPacket();
+}
+
+static void kakuSend(char addr, byte device, byte on) {
+  int cmd = 0x600 | ((device - 1) << 4) | ((addr - 1) & 0xF);
+  if (on)
+    cmd |= 0x800;
+  for (byte i = 0; i < 4; ++i) {
+    startOOK(2667.0); //PACKET mode: 375us (2667bps) largest common divisor
+    int sr = cmd;
+    for (uint8_t bit = 0; bit < 12; ++bit) {
+      addOutBit(1);
+      addOutBit(0);
+      addOutBit(0);
+      addOutBit(0);
+      uint8_t n = (sr & 1 ? 3 : 1);
+      for (uint8_t on = n; on > 0; on--)
+        addOutBit(1);
+      for (uint8_t off = 4 - n; off > 0; off--)
+        addOutBit(0);
+      sr >>= 1;
+    }
+    addOutBit(1);
+    addOutBit(0);
+    stopOOK();
+    //delay(11); // approximate
+  }
+}
+
+void rtl_433_ESP::enableTransmitter() {
+	// try FIFO bitrate transmit...
+  disableReceiver();
+  alogprintfLn(LOG_INFO, "ChipVersion: 0x%.2x", radio.getChipVersion());
+  getModuleStatus();
+  logprintfLn(LOG_INFO, "Try kakuSend");
+  kakuSend('C', 2, 1);
+  getModuleStatus();
+}
+
+#else
+void rtl_433_ESP::enableTransmitter() {
+  disableReceiver();
+  if (receiverGpio >= 0) {
+	  pinMode(receiverGpio, OUTPUT);
+  }
+
+  int state = radio.setDataShapingOOK(0); // Default 0 ( 0, 1, 2 )
+  RADIOLIB_STATE(state, "setDataShapingOOK");
+  state = radio.transmitDirect();
+  RADIOLIB_STATE(state, "transmitDirect");
+
+  state = radio.setOutputPower(13, true);
+  RADIOLIB_STATE(state, "setOutputPower");
+}
+#endif
+#endif
+
+#ifdef RF_CC1101
+void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
+  disableReceiver();
+  if (receiverGpio >= 0) {
+    pinMode(receiverGpio, OUTPUT);
+  }
+  int state = radio.setDataShapingOOK(0);
+  RADIOLIB_STATE(state, "setDataShapingOOK");
+  state = radio.transmitDirect();
+  RADIOLIB_STATE(state, "transmitDirect");
+  state = radio.setOutputPower(13, true);
+  RADIOLIB_STATE(state, "setOutputPower");
+
+  bool level = true;
+  for (uint16_t i = 0; i < count; i++) {
+    digitalWrite(receiverGpio, level ? HIGH : LOW);
+    delayMicroseconds(timings_us[i]);
+    level = !level;
+  }
+  digitalWrite(receiverGpio, LOW);
+
+  radio.SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
+  radio.SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
+  enableReceiver();
+}
+#elif defined(RF_SX1276) || defined(RF_SX1278)
+void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
+  if (count == 0) return;
+
+  // Base period T = first timing (µs). All others are encoded as round(t/T) bits.
+  // NewKAKU: 10.5T start-low rounds to 11T (+5% error, within decoder tolerance).
+  // Frame sizes at T=260µs:  on/off = 39 bytes,  dim = 43 bytes — both fit the 64-byte FIFO.
+  uint32_t base_us = timings_us[0];
+
+  // Encode pulse train into MSB-first OOK byte stream: 1=carrier on, 0=carrier off
+  uint8_t buf[64] = {};
+  uint16_t bit_pos = 0;
+  bool level = true;
+  for (uint16_t i = 0; i < count; i++) {
+    uint16_t n = (uint16_t)((timings_us[i] + base_us / 2) / base_us);
+    if (n == 0) n = 1;
+    uint8_t bv = level ? 1 : 0;
+    for (uint16_t b = 0; b < n && bit_pos < 512; b++) {
+      buf[bit_pos >> 3] |= (bv << (7 - (bit_pos & 7)));
+      bit_pos++;
+    }
+    level = !level;
+  }
+  uint8_t nbytes = (uint8_t)((bit_pos + 7) >> 3);
+  if (nbytes > 64) {
+    logprintfLn(LOG_WARNING, "sendPulses: frame %u bytes exceeds 64-byte SX127X FIFO", nbytes);
+    return;
+  }
+
+  disableReceiver();
+
+  float bitrate_kbps = 1000.0f / (float)base_us;  // µs period → kbps
+
+  int16_t state;
+  state = radio.standby();
+  RADIOLIB_STATE(state, "TX standby");
+  state = radio.setOOK(true);
+  RADIOLIB_STATE(state, "TX setOOK");
+  state = radio.setBitRate(bitrate_kbps);
+  RADIOLIB_STATE(state, "TX setBitRate");
+  state = radio.setDataShapingOOK(0);  // no filter shaping for clean TX edges
+  RADIOLIB_STATE(state, "TX setDataShapingOOK");
+
+  // No preamble — default is 3 bytes of 0xAA which would corrupt the frame
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK, 0x00);
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK, 0x00);
+
+  // No sync word insertion in TX
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, 0x00);  // bit3=SyncOn=0
+
+  // Fixed-length packet, no DC-free encoding, no CRC
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 0x00, 7, 7);  // bit7=0: fixed length
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 0x00, 6, 5);  // bits[6:5]=00: no DC-free
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 0x00, 4, 4);  // bit4=0: no CRC
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH_FSK, nbytes);
+
+  // Fill FIFO then start TX
+  for (uint8_t i = 0; i < nbytes; i++)
+    _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, buf[i]);
+
+  state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, RADIOLIB_SX127X_TX, 2, 0, 5, 0xFE);
+  RADIOLIB_STATE(state, "TX setModeTX");
+
+  // Poll PacketSent flag (REG_IRQ_FLAGS_2 bit3), timeout 500 ms
+  uint32_t t0 = millis();
+  while (!(_mod->SPIreadRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS_2) & RADIOLIB_SX127X_FLAG_PACKET_SENT)) {
+    if (millis() - t0 > 500) {
+      logprintfLn(LOG_WARNING, "sendPulses: TX timeout");
+      break;
+    }
+    delayMicroseconds(100);
+  }
+
+  // Restore OOK receive config (mirror of initReceiver() OOK path)
+  state = radio.setDataShapingOOK(2);  // restore RX shaping
+  RADIOLIB_STATE(state, "RX restore setDataShapingOOK");
+  state = radio.setBitRate(1.2f);      // restore 1.2 kbps threshold-detection rate
+  RADIOLIB_STATE(state, "RX restore setBitRate");
+  state = radio.receiveDirect();       // back to continuous OOK RX
+  RADIOLIB_STATE(state, "RX restore receiveDirect");
+
+  enableReceiver();  // re-attach GPIO interrupt
+}
+#else
+void rtl_433_ESP::sendPulses(uint32_t* timings_us, uint16_t count) {
+  // No transmit support for this radio type
+  (void)timings_us;
+  (void)count;
+}
+#endif
+
 /**
  * @brief watch for completed signals being received, and pass to decoder logic
- * 
+ *
  */
 void rtl_433_ESP::loop() {
   if (_enabledReceiver) {
@@ -529,8 +881,8 @@ void rtl_433_ESP::loop() {
 
 /**
  * @brief Background task to monitor RSSI signal level and start / end signal receiving
- * 
- * @param pvParameters 
+ *
+ * @param pvParameters
  */
 void rtl_433_ESP::rtl_433_ReceiverTask(void* pvParameters) {
   for (;;) {
@@ -663,10 +1015,10 @@ void rtl_433_ESP::rtl_433_ReceiverTask(void* pvParameters) {
 
 /**
  * @brief Client callback to receive decoded signals
- * 
- * @param callback 
- * @param messageBuffer 
- * @param bufferSize 
+ *
+ * @param callback
+ * @param messageBuffer
+ * @param bufferSize
  */
 rtl_433_ESPCallBack _callback; // TODO: Use global object
 char* _messageBuffer;
@@ -683,8 +1035,8 @@ void rtl_433_ESP::setCallback(rtl_433_ESPCallBack callback, char* messageBuffer,
 
 /**
  * @brief Set delta applied to average RSSI level for determining start and end of signal
- * 
- * @param newRssi 
+ *
+ * @param newRssi
  */
 void rtl_433_ESP::setRSSIThreshold(int newRssi) {
   rssiThresholdDelta = newRssi;
@@ -698,7 +1050,7 @@ void rtl_433_ESP::setRSSIThreshold(int newRssi) {
 
 /**
  * @brief set OOK Threshold
- * 
+ *
  */
 #if defined(RF_SX1276) || defined(RF_SX1278)
 void rtl_433_ESP::setOOKThreshold(int newOokThreshold) {
@@ -715,8 +1067,8 @@ void rtl_433_ESP::setOOKThreshold(int newOokThreshold) {
 
 /**
  * @brief This does not work
- * 
- * @param debug 
+ *
+ * @param debug
  */
 void rtl_433_ESP::setDebug(int debug) {
   rtlVerbose = debug;
@@ -725,8 +1077,8 @@ void rtl_433_ESP::setDebug(int debug) {
 
 /**
  * @brief Send RTL_433_ESP status to serial port and client. Also send to serial port transceiver status.
- * 
- * @param status 
+ *
+ * @param status
  */
 void rtl_433_ESP::getStatus() {
   alogprintfLn(LOG_INFO, " ");

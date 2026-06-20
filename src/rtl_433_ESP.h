@@ -131,7 +131,7 @@
 #  endif
 #endif
 
-#if defined(ARDUINO_TTGO_LoRa32_v21new) // LILYGO® Disaster-Radio LoRa V2.1_1.6.1
+#if defined(ARDUINO_TTGO_LoRa32_v21new) || defined(ARDUINO_TTGO_LoRa32)// LILYGO® Disaster-Radio LoRa V2.1_1.6.1
 #  ifndef RF_SX1278
 #    define RF_SX1276 "SX1276"
 #  endif
@@ -222,6 +222,9 @@
     }
 #endif
 
+#ifdef RADIOLIBSX127X
+typedef int (*decodePulseGapDurationCallback)(const unsigned int duration);
+#endif
 /**
  * message - JSON formatted message from device
  */
@@ -289,6 +292,18 @@ public:
    */
   static void disableReceiver();
 
+  /**
+   * Transmit a raw OOK pulse train on CC1101.
+   * timings_us: alternating HIGH/LOW durations in microseconds, starting HIGH.
+   * count: number of entries.
+   */
+  static void sendPulses(uint32_t* timings_us, uint16_t count);
+
+#ifdef RADIOLIBSX127X
+  static void enableTransmitter();
+  static decodePulseGapDurationCallback _decodePulseGapDurationCallback;
+  static void enableReceiverPg(decodePulseGapDurationCallback pgdc);
+#endif
   /**
    * For SX127x transceiver module, Optimizing the OOK Floor Threshold
    */
@@ -364,7 +379,7 @@ public:
  * @brief OOK/FSK Modulation
  * true = OOK
  * false = FSK
- * 
+ *
  */
   static bool ookModulation;
 
